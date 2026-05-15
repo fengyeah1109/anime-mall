@@ -1,0 +1,12 @@
+{
+  "name": "anime-shop",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "test:aftersale": "node test-aftersale.js"
+  },
+  "dependencies": {
+    "axios": "^1.14.0"
+  }
+}
+

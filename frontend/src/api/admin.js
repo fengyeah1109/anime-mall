@@ -1,0 +1,25 @@
+import request from '@/utils/request'
+
+export const adminProductsApi = (params) => request.get('/admin/products', { params })
+export const adminCreateProductApi = (data) => request.post('/admin/products', data)
+export const adminUpdateProductApi = (data) => request.put('/admin/products', data)
+export const adminDeleteProductApi = (id) => request.delete(`/admin/products/${id}`)
+
+export const adminCategoryTreeApi = () => request.get('/admin/categories/tree')
+export const adminCreateCategoryApi = (data) => request.post('/admin/categories', data)
+export const adminUpdateCategoryApi = (data) => request.put('/admin/categories', data)
+export const adminDeleteCategoryApi = (id) => request.delete(`/admin/categories/${id}`)
+
+export const adminOrdersApi = (params) => request.get('/admin/orders', { params })
+export const adminDeliverOrderApi = (id, logisticsNo) => request.put(`/admin/orders/${id}/deliver`, null, { params: { logisticsNo } })
+export const adminUpdateOrderStatusApi = (id, status) => request.put(`/admin/orders/${id}/status`, null, { params: { status } })
+export const adminUsersApi = (params) => request.get('/admin/users', { params })
+export const adminUserStatusApi = (id, status) => request.put(`/admin/users/${id}/status`, null, { params: { status } })
+export const adminArticlesApi = (params) => request.get('/admin/articles', { params })
+export const adminAfterSalesApi = (params) => request.get('/admin/after-sales', { params })
+export const adminAfterSaleDetailApi = (id) => request.get(`/admin/after-sales/${id}`)
+export const adminUpdateAfterSaleStatusApi = (id, data) => request.put(`/admin/after-sales/${id}/status`, data)
+export const adminSalesApi = () => request.get('/admin/statistics/sales')
+export const adminHotProductsApi = () => request.get('/admin/statistics/hot-products')
+export const adminUserBehaviorApi = () => request.get('/admin/statistics/user-behavior')
+export const getAnimeIpsApi = () => request.get('/admin/anime-ips')
