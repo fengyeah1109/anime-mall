@@ -115,11 +115,12 @@ import { useRoute } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import { ShoppingCart, Star } from '@element-plus/icons-vue'
 import { getProductDetailApi } from '@/api/product'
-import { addCartApi } from '@/api/cart'
+import { useCartStore } from '@/stores/cart'
 import { addFavoriteApi } from '@/api/user'
 import { getImageUrl, parseReviewImages } from '@/utils/image'
 
 const route = useRoute()
+const cartStore = useCartStore()
 const detail = ref({ product: null, images: [] })
 const qty = ref(1)
 const currentImage = ref('')
@@ -165,7 +166,7 @@ onMounted(async () => {
 
 const addCart = async () => {
   try {
-    await addCartApi({ productId: detail.value.product.id, quantity: qty.value })
+    await cartStore.addItem(detail.value.product.id, qty.value)
     ElMessage.success('已加入购物车')
   } catch (error) {
     // 401/403 错误已在拦截器中处理，这里不重复提示

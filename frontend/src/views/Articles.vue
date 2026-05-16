@@ -66,7 +66,7 @@
       <el-pagination
         v-model:current-page="currentPage"
         v-model:page-size="pageSize"
-        :page-sizes="[6, 9, 12, 18]"
+        :page-sizes="[5, 10, 15, 20]"
         layout="total, sizes, prev, pager, next"
         :total="articles.total"
         @size-change="handleSizeChange"
@@ -82,7 +82,7 @@ import { getArticlesApi } from '@/api/product'
 
 const articles = ref({})
 const currentPage = ref(1)
-const pageSize = ref(9)
+const pageSize = ref(5)
 
 const categoryIcons = {
   '番剧': '🎬',
@@ -322,6 +322,7 @@ const formatDate = (date) => {
   font-size: 22px;
   display: block !important;
   -webkit-line-clamp: unset !important;
+  line-clamp: unset !important;
   overflow: visible !important;
   text-overflow: unset !important;
   white-space: normal !important;
@@ -330,6 +331,7 @@ const formatDate = (date) => {
 .article-card.featured .article-summary {
   display: block !important;
   -webkit-line-clamp: unset !important;
+  line-clamp: unset !important;
   -webkit-box-orient: unset !important;
   overflow: visible !important;
   text-overflow: unset !important;
@@ -429,6 +431,7 @@ const formatDate = (date) => {
   line-height: 1.5;
   display: -webkit-box;
   -webkit-line-clamp: 2;
+  line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
   transition: color 0.3s ease;
@@ -445,6 +448,7 @@ const formatDate = (date) => {
   margin: 0 0 16px;
   display: -webkit-box;
   -webkit-line-clamp: 2;
+  line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }

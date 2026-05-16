@@ -222,7 +222,7 @@ public class ApiAdminController {
     @GetMapping("/articles")
     public Result<Page<Article>> adminArticles(@RequestParam(defaultValue = "1") int page,
                                                @RequestParam(defaultValue = "10") int size) {
-        return Result.success(articleService.page(new Page<>(page, size), new LambdaQueryWrapper<Article>().orderByDesc(Article::getCreateTime)));
+        return Result.success(articleService.page(new Page<>(page, size), new LambdaQueryWrapper<Article>().orderByDesc(Article::getId)));
     }
 
     @PostMapping("/articles")

@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { getCartApi } from '@/api/cart'
+import { getCartApi, addCartApi } from '@/api/cart'
 
 export const useCartStore = defineStore('cart', {
   state: () => ({ list: [] }),
@@ -9,6 +9,10 @@ export const useCartStore = defineStore('cart', {
   actions: {
     async loadCart() {
       this.list = await getCartApi()
+    },
+    async addItem(productId, quantity) {
+      await addCartApi({ productId, quantity })
+      await this.loadCart()
     }
   }
 })

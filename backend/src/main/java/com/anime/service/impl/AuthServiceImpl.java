@@ -100,18 +100,26 @@ public class AuthServiceImpl implements AuthService {
                 .eq(User::getUsername, identifier)
                 .or().eq(User::getPhone, identifier)
                 .or().eq(User::getEmail, identifier));
-        if (user != null && passwordEncoder.matches(password, user.getPassword())) {
-            return jwtUtil.generateToken(user.getId(), "USER");
+        if (user != null) {
+            if (passwordEncoder.matches(password, user.getPassword())) {
+                return jwtUtil.generateToken(user.getId(), "USER");
+            } else {
+                throw new BusinessException(401, "密码错误");
+            }
         }
 
         // 再查管理员（只支持 username 登录）
         Admin admin = adminMapper.selectOne(new com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper<Admin>()
                 .eq(Admin::getUsername, identifier));
-        if (admin != null && passwordEncoder.matches(password, admin.getPassword())) {
-            return jwtUtil.generateToken(admin.getId(), "ADMIN");
+        if (admin != null) {
+            if (passwordEncoder.matches(password, admin.getPassword())) {
+                return jwtUtil.generateToken(admin.getId(), "ADMIN");
+            } else {
+                throw new BusinessException(401, "密码错误");
+            }
         }
 
-        throw new BusinessException(401, "invalid credentials");
+        throw new BusinessException(401, "账号不存在");
     }
 }
 

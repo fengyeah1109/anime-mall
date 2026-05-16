@@ -119,18 +119,22 @@ const adminRules = {
 }
 
 const submit = async (role) => {
-  if (role === 'USER') {
-    await formRef.value.validate()
-    const data = await loginApi(form.value)
-    userStore.setAuth(data.token, { role: 'USER' })
-    ElMessage.success('登录成功')
-    router.push('/')
-  } else {
-    await adminFormRef.value.validate()
-    const data = await loginApi(adminForm.value)
-    userStore.setAuth(data.token, { role: 'ADMIN' })
-    ElMessage.success('管理员登录成功')
-    router.push('/admin/products')
+  try {
+    if (role === 'USER') {
+      await formRef.value.validate()
+      const data = await loginApi(form.value)
+      userStore.setAuth(data.token, { role: 'USER' })
+      ElMessage.success('登录成功')
+      router.push('/')
+    } else {
+      await adminFormRef.value.validate()
+      const data = await loginApi(adminForm.value)
+      userStore.setAuth(data.token, { role: 'ADMIN' })
+      ElMessage.success('管理员登录成功')
+      router.push('/admin/products')
+    }
+  } catch (error) {
+    ElMessage.error(error.message || '登录失败')
   }
 }
 </script>

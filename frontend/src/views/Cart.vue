@@ -89,22 +89,18 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { clearCartApi, getCartApi, removeCartApi, updateCartApi, selectedCartApi } from '@/api/cart'
+import { clearCartApi, removeCartApi, updateCartApi, selectedCartApi } from '@/api/cart'
 import { ElMessage, ElMessageBox } from 'element-plus'
+import { useCartStore } from '@/stores/cart'
+import { storeToRefs } from 'pinia'
 
 const router = useRouter()
-const list = ref([])
-const loading = ref(false)
+const cartStore = useCartStore()
+const { list } = storeToRefs(cartStore)
+const loading = computed(() => false)
 
 const load = async () => {
-  loading.value = true
-  try {
-    list.value = await getCartApi()
-  } catch (error) {
-    ElMessage.error('加载购物车失败')
-  } finally {
-    loading.value = false
-  }
+  await cartStore.loadCart()
 }
 
 const updateQty = async (item, delta) => {
@@ -112,8 +108,8 @@ const updateQty = async (item, delta) => {
   if (newQty < 1) return
   try {
     await updateCartApi({ id: item.id, quantity: newQty, selected: item.selected })
-    item.quantity = newQty
-    item.totalPrice = (item.price || 0) * newQty
+    await cartStore.loadCart()
+    ElMessage.success('数量已更新')
   } catch (error) {
     ElMessage.error('更新失败')
   }
@@ -124,8 +120,8 @@ const updateQtyInput = async (item, event) => {
   if (newQty < 1) return
   try {
     await updateCartApi({ id: item.id, quantity: newQty, selected: item.selected })
-    item.quantity = newQty
-    item.totalPrice = (item.price || 0) * newQty
+    await cartStore.loadCart()
+    ElMessage.success('数量已更新')
   } catch (error) {
     ElMessage.error('更新失败')
   }

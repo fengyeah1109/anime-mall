@@ -12,7 +12,7 @@
         </nav>
         <div class="header-right">
           <router-link to="/cart" class="header-icon">
-            <el-badge :value="cartCount" :hidden="!cartCount" :max="99">
+            <el-badge :value="userStore.isLogin ? cartCount : 0" :hidden="!userStore.isLogin || !cartCount" :max="99">
               <el-icon size="20"><ShoppingCart /></el-icon>
             </el-badge>
           </router-link>
@@ -36,24 +36,21 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { onMounted } from 'vue'
 import { ShoppingCart } from '@element-plus/icons-vue'
-import { getCartApi } from '@/api/cart'
 import { useUserStore } from '@/stores/user'
+import { useCartStore } from '@/stores/cart'
+import { storeToRefs } from 'pinia'
 
 const userStore = useUserStore()
-const cartCount = ref(0)
+const cartStore = useCartStore()
+const { totalCount: cartCount } = storeToRefs(cartStore)
 
-const loadCartCount = async () => {
+onMounted(() => {
   if (userStore.isLogin) {
-    try {
-      const res = await getCartApi()
-      cartCount.value = res.length || 0
-    } catch (e) {}
+    cartStore.loadCart()
   }
-}
-
-onMounted(loadCartCount)
+})
 </script>
 
 <style scoped>

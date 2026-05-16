@@ -1,7 +1,8 @@
 <template>
   <div class="home-page">
+    <!-- 轮播图区域 -->
     <div class="banner-section">
-      <el-carousel height="520px" :interval="5000" v-if="banners.length > 0">
+      <el-carousel height="560px" :interval="5000" v-if="banners.length > 0">
         <el-carousel-item v-for="banner in banners" :key="banner.id">
           <div class="banner-item" @click="handleBannerClick(banner)">
             <img :src="banner.imageUrl" :alt="banner.title" class="banner-img" />
@@ -12,7 +13,7 @@
           </div>
         </el-carousel-item>
       </el-carousel>
-      <el-carousel height="520px" :interval="5000" v-else>
+      <el-carousel height="560px" :interval="5000" v-else>
         <el-carousel-item v-for="i in 3" :key="i">
           <div class="banner-item" :style="{ background: getBannerColor(i) }">
             <div class="banner-content">
@@ -24,6 +25,7 @@
       </el-carousel>
     </div>
 
+    <!-- 热销推荐 -->
     <section class="section">
       <div class="section-header">
         <div class="section-title-wrap">
@@ -63,6 +65,7 @@
       </div>
     </section>
 
+    <!-- 为你推荐 -->
     <section class="section" v-if="recommendations.length > 0">
       <div class="section-header">
         <div class="section-title-wrap">
@@ -71,7 +74,7 @@
         </div>
       </div>
       <div class="product-grid">
-        <div v-for="p in recommendations" :key="p.id" class="product-card" @click="$router.push(`/products/${p.id}`)">
+        <div v-for="p in recommendations.slice(0, 8)" :key="p.id" class="product-card" @click="$router.push(`/products/${p.id}`)">
           <div class="product-img-wrap">
             <img :src="p.mainImage" :alt="p.name" class="product-img" />
             <div class="product-tags">
@@ -96,6 +99,7 @@
       </div>
     </section>
 
+    <!-- 最新资讯 -->
     <section class="section news-section">
       <div class="section-header">
         <div class="section-title-wrap">
@@ -194,23 +198,24 @@ onMounted(async () => {
 </script>
 
 <style scoped>
+/* ========== 全新视觉风格 ========== */
 .home-page {
-  padding-bottom: 60px;
-  background: #fafbfc;
+  padding-bottom: 80px;
+  background: #f8fafc;
 }
 
+/* 轮播图区域 */
 .banner-section {
   margin-bottom: 50px;
   width: 100%;
   position: relative;
-  padding: 20px 24px;
-  background: #fafbfc;
+  padding: 0;
+  background: linear-gradient(180deg, #f0f2f5 0%, #f8fafc 100%);
 }
 
 .banner-section :deep(.el-carousel) {
   overflow: hidden;
-  border-radius: 20px;
-  box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+  box-shadow: 0 15px 35px -12px rgba(0,0,0,0.2);
 }
 
 .banner-section :deep(.el-carousel__container) {
@@ -218,21 +223,21 @@ onMounted(async () => {
 }
 
 .banner-section :deep(.el-carousel__indicator) {
-  padding: 12px 6px;
+  padding: 8px 4px;
 }
 
 .banner-section :deep(.el-carousel__indicator .el-carousel__button) {
-  width: 8px;
-  height: 8px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
-  background: rgba(255,255,255,0.5);
+  background: rgba(255,255,255,0.6);
   transition: all 0.3s ease;
 }
 
 .banner-section :deep(.el-carousel__indicator.is-active .el-carousel__button) {
-  background: #fff;
-  width: 24px;
-  border-radius: 4px;
+  background: #ff6b6b;
+  width: 28px;
+  border-radius: 5px;
 }
 
 .banner-item {
@@ -250,39 +255,39 @@ onMounted(async () => {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.6s ease;
+  transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .banner-item:hover .banner-img {
-  transform: scale(1.03);
+  transform: scale(1.05);
 }
 
 .banner-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.5) 100%);
+  background: linear-gradient(90deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.4) 100%);
 }
 
 .banner-content {
   text-align: center;
   color: #fff;
   position: absolute;
-  bottom: 60px;
+  bottom: 80px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 10;
   width: 90%;
-  max-width: 800px;
+  max-width: 900px;
+  backdrop-filter: blur(0px);
 }
 
 .banner-content h2 {
-  font-size: 44px;
-  margin: 0 0 14px;
-  font-weight: 700;
-  letter-spacing: 3px;
-  text-shadow: 0 2px 30px rgba(0, 0, 0, 0.5), 0 0 60px rgba(0,0,0,0.3);
-  line-height: 1.3;
-  background: linear-gradient(180deg, #fff 0%, rgba(255,255,255,0.85) 100%);
+  font-size: 48px;
+  margin: 0 0 16px;
+  font-weight: 800;
+  letter-spacing: 4px;
+  text-shadow: 0 4px 25px rgba(0,0,0,0.3);
+  background: linear-gradient(135deg, #ffffff 0%, #ffe0d4 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -291,15 +296,17 @@ onMounted(async () => {
 .banner-content p {
   font-size: 18px;
   margin: 0;
-  opacity: 0.9;
-  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.4);
+  opacity: 0.95;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+  font-weight: 500;
   letter-spacing: 1px;
 }
 
+/* 公用区块 */
 .section {
-  margin-bottom: 50px;
-  padding: 0 32px;
-  max-width: 1360px;
+  margin-bottom: 60px;
+  padding: 0 5%;
+  max-width: 1400px;
   margin-left: auto;
   margin-right: auto;
 }
@@ -307,26 +314,32 @@ onMounted(async () => {
 .section-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 28px;
+  align-items: flex-end;
+  margin-bottom: 32px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid rgba(255,107,107,0.15);
 }
 
 .section-title-wrap {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
 }
 
 .section-icon {
-  font-size: 24px;
+  font-size: 28px;
+  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
 }
 
 .section-title {
-  font-size: 22px;
-  font-weight: 700;
-  color: #2d2d2d;
+  font-size: 26px;
+  font-weight: 800;
   margin: 0;
-  letter-spacing: 0.5px;
+  background: linear-gradient(135deg, #2d2d2d 0%, #ff6b6b 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 1px;
 }
 
 .section-more {
@@ -334,19 +347,26 @@ onMounted(async () => {
   align-items: center;
   gap: 6px;
   font-size: 14px;
-  color: #888;
+  font-weight: 600;
+  color: #ff6b6b;
   transition: all 0.3s ease;
-  font-weight: 500;
+  text-decoration: none;
+  background: rgba(255,107,107,0.08);
+  padding: 8px 18px;
+  border-radius: 40px;
 }
 
 .section-more:hover {
-  color: #ff6b6b;
+  background: #ff6b6b;
+  color: white;
   gap: 10px;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(255,107,107,0.3);
 }
 
 .arrow-svg {
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
   transition: transform 0.3s ease;
 }
 
@@ -354,25 +374,26 @@ onMounted(async () => {
   transform: translateX(4px);
 }
 
+/* 商品卡片 */
 .product-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 24px;
+  gap: 28px;
 }
 
 .product-card {
-  background: #fff;
-  border-radius: 16px;
+  background: #ffffff;
+  border-radius: 20px;
   overflow: hidden;
   cursor: pointer;
-  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-  border: 1px solid #f0f0f0;
+  transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.04);
+  border: 1px solid rgba(0,0,0,0.04);
 }
 
 .product-card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 20px 40px rgba(255,107,107,0.15), 0 8px 16px rgba(0,0,0,0.08);
+  transform: translateY(-12px);
+  box-shadow: 0 25px 40px -12px rgba(255,107,107,0.35), 0 10px 20px -8px rgba(0,0,0,0.1);
   border-color: rgba(255,107,107,0.2);
 }
 
@@ -380,7 +401,7 @@ onMounted(async () => {
   position: relative;
   padding-top: 100%;
   overflow: hidden;
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  background: linear-gradient(145deg, #f0f2f5 0%, #e2e6ea 100%);
 }
 
 .product-img {
@@ -394,25 +415,26 @@ onMounted(async () => {
 }
 
 .product-card:hover .product-img {
-  transform: scale(1.1);
+  transform: scale(1.08);
 }
 
 .product-tags {
   position: absolute;
-  top: 12px;
-  left: 12px;
+  top: 14px;
+  left: 14px;
   display: flex;
-  gap: 6px;
+  gap: 8px;
   z-index: 2;
 }
 
 .product-tag {
-  padding: 4px 10px;
+  padding: 4px 12px;
   font-size: 11px;
-  border-radius: 6px;
+  border-radius: 30px;
   color: #fff;
-  font-weight: 600;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  font-weight: 700;
+  backdrop-filter: blur(4px);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
 .product-tag.hot {
@@ -420,13 +442,14 @@ onMounted(async () => {
 }
 
 .product-tag.new {
-  background: linear-gradient(135deg, #22c997, #1db386);
+  background: linear-gradient(135deg, #20c997, #1aa179);
 }
 
 .product-overlay {
   position: absolute;
   inset: 0;
-  background: rgba(0,0,0,0.3);
+  background: rgba(0,0,0,0.25);
+  backdrop-filter: blur(3px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -439,14 +462,15 @@ onMounted(async () => {
 }
 
 .view-btn {
-  background: #fff;
-  color: #2d2d2d;
-  padding: 10px 24px;
-  border-radius: 25px;
-  font-size: 13px;
-  font-weight: 600;
-  transform: translateY(10px);
+  background: rgba(255,255,255,0.95);
+  color: #ff6b6b;
+  padding: 10px 28px;
+  border-radius: 40px;
+  font-size: 14px;
+  font-weight: 700;
+  transform: translateY(15px);
   transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
 .product-card:hover .view-btn {
@@ -454,21 +478,22 @@ onMounted(async () => {
 }
 
 .product-info {
-  padding: 18px;
+  padding: 20px 18px 22px;
 }
 
 .product-name {
   font-size: 15px;
-  font-weight: 600;
-  color: #2d2d2d;
+  font-weight: 700;
+  color: #1e293b;
   margin: 0 0 12px;
-  line-height: 1.5;
-  height: 45px;
+  line-height: 1.45;
+  height: 44px;
   display: -webkit-box;
   -webkit-line-clamp: 2;
+  line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  transition: color 0.2s ease;
+  transition: color 0.2s;
 }
 
 .product-card:hover .product-name {
@@ -479,26 +504,33 @@ onMounted(async () => {
   display: flex;
   align-items: baseline;
   gap: 10px;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 }
 
 .price-current {
-  font-size: 22px;
+  font-size: 24px;
   color: #ff6b6b;
-  font-weight: 700;
+  font-weight: 800;
+  letter-spacing: -0.5px;
 }
 
 .price-original {
   font-size: 13px;
-  color: #bbb;
+  color: #94a3b8;
   text-decoration: line-through;
 }
 
 .product-sales {
   font-size: 12px;
-  color: #999;
+  color: #94a3b8;
+  font-weight: 500;
+  background: #f1f5f9;
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 20px;
 }
 
+/* 资讯卡片 */
 .news-section {
   margin-bottom: 60px;
 }
@@ -506,39 +538,39 @@ onMounted(async () => {
 .news-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
+  gap: 28px;
 }
 
 .news-card {
   display: flex;
   background: #fff;
-  border-radius: 12px;
+  border-radius: 24px;
   overflow: hidden;
   cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-  border: 1px solid #f0f0f0;
+  transition: all 0.35s ease;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.04);
+  border: 1px solid #eef2f6;
 }
 
 .news-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.1);
-  border-color: #e0e0e0;
+  transform: translateY(-6px);
+  box-shadow: 0 20px 30px -12px rgba(0,0,0,0.12);
+  border-color: #ffe0d4;
 }
 
 .news-cover {
-  width: 160px;
+  width: 180px;
   flex-shrink: 0;
   position: relative;
   overflow: hidden;
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  background: linear-gradient(135deg, #f1f3f5 0%, #e9ecef 100%);
 }
 
 .news-cover img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.4s ease;
+  transition: transform 0.5s ease;
 }
 
 .news-card:hover .news-cover img {
@@ -547,47 +579,50 @@ onMounted(async () => {
 
 .news-body {
   flex: 1;
-  padding: 18px 20px;
+  padding: 22px 24px;
   display: flex;
   flex-direction: column;
 }
 
 .news-category {
   display: inline-block;
-  background: linear-gradient(135deg, #22c997, #1db386);
+  background: linear-gradient(135deg, #20c997, #1aa179);
   color: #fff;
-  padding: 4px 10px;
-  border-radius: 4px;
+  padding: 4px 14px;
+  border-radius: 20px;
   font-size: 11px;
-  font-weight: 600;
-  margin-bottom: 10px;
+  font-weight: 700;
+  margin-bottom: 12px;
   align-self: flex-start;
+  letter-spacing: 0.5px;
 }
 
 .news-title {
-  font-size: 16px;
-  font-weight: 600;
-  color: #2d2d2d;
-  margin: 0 0 8px;
+  font-size: 18px;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0 0 10px;
   line-height: 1.4;
   display: -webkit-box;
   -webkit-line-clamp: 2;
+  line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  transition: color 0.2s ease;
+  transition: color 0.2s;
 }
 
 .news-card:hover .news-title {
-  color: #22c997;
+  color: #ff6b6b;
 }
 
 .news-desc {
   font-size: 13px;
   line-height: 1.6;
-  color: #888;
-  margin: 0 0 12px;
+  color: #64748b;
+  margin: 0 0 16px;
   display: -webkit-box;
   -webkit-line-clamp: 2;
+  line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
   flex: 1;
@@ -597,20 +632,22 @@ onMounted(async () => {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-top: 8px;
 }
 
 .news-time {
   font-size: 12px;
-  color: #aaa;
+  color: #94a3b8;
+  font-weight: 500;
 }
 
 .news-link {
   font-size: 13px;
-  color: #22c997;
-  font-weight: 500;
+  font-weight: 700;
+  color: #20c997;
   opacity: 0;
-  transform: translateX(-5px);
-  transition: all 0.2s ease;
+  transform: translateX(-8px);
+  transition: all 0.25s ease;
 }
 
 .news-card:hover .news-link {
@@ -618,40 +655,65 @@ onMounted(async () => {
   transform: translateX(0);
 }
 
-@media (max-width: 1200px) {
+/* 响应式优化 */
+@media (max-width: 1300px) {
   .product-grid {
     grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+}
+
+@media (max-width: 1000px) {
+  .product-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
   
   .news-grid {
     grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .section-title {
+    font-size: 22px;
+  }
+  
+  .banner-content h2 {
+    font-size: 36px;
   }
 }
 
 @media (max-width: 768px) {
   .banner-section :deep(.el-carousel) {
-    height: 320px !important;
+    height: 360px !important;
   }
   
   .banner-content h2 {
-    font-size: 28px;
+    font-size: 26px;
+  }
+  
+  .banner-content p {
+    font-size: 14px;
   }
   
   .section {
-    padding: 0 16px;
-  }
-  
-  .section-title {
-    font-size: 20px;
+    padding: 0 4%;
   }
   
   .product-grid {
-    grid-template-columns: repeat(2, 1fr);
     gap: 16px;
   }
   
-  .news-grid {
-    grid-template-columns: 1fr;
+  .product-info {
+    padding: 14px;
+  }
+  
+  .product-name {
+    font-size: 13px;
+    height: 38px;
+  }
+  
+  .price-current {
+    font-size: 20px;
   }
   
   .news-card {
@@ -660,7 +722,15 @@ onMounted(async () => {
   
   .news-cover {
     width: 100%;
-    height: 140px;
+    height: 150px;
+  }
+  
+  .news-body {
+    padding: 18px;
+  }
+  
+  .section-more {
+    padding: 6px 14px;
   }
 }
 </style>

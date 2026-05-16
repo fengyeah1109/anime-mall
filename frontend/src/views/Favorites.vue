@@ -39,9 +39,10 @@ import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { getFavoritesApi, deleteFavoriteApi } from '@/api/user'
-import { addCartApi } from '@/api/cart'
+import { useCartStore } from '@/stores/cart'
 
 const router = useRouter()
+const cartStore = useCartStore()
 const favorites = ref([])
 const loading = ref(false)
 
@@ -80,10 +81,7 @@ const removeFavorite = async (id) => {
 
 const addToCart = async (item) => {
   try {
-    await addCartApi({
-      productId: item.productId,
-      quantity: 1
-    })
+    await cartStore.addItem(item.productId, 1)
     ElMessage.success('已加入购物车')
   } catch (error) {
     ElMessage.error('加入购物车失败')
@@ -182,6 +180,7 @@ onMounted(loadFavorites)
   overflow: hidden;
   display: -webkit-box;
   -webkit-line-clamp: 2;
+  line-clamp: 2;
   -webkit-box-orient: vertical;
   cursor: pointer;
   margin-bottom: 10px;

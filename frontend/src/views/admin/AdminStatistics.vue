@@ -44,11 +44,39 @@ onMounted(async () => {
     series: [{ type: 'line', data: sales.map((x) => Number(x.payAmount || 0)) }]
   })
   
+  // 处理商品热度数据，如果数据太少则添加默认数据
+  let hotProducts = hot || []
+  if (hotProducts.length === 0) {
+    // 如果没有数据，显示提示
+    hotProducts = [{ name: '暂无数据', sales: 0 }]
+  }
+  
   echarts.init(hotRef.value).setOption({
     title: { text: '商品热度' },
-    xAxis: { type: 'category', data: hot.map((x) => x.name) },
-    yAxis: { type: 'value' },
-    series: [{ type: 'bar', data: hot.map((x) => x.sales || 0) }]
+    tooltip: { trigger: 'axis' },
+    xAxis: { 
+      type: 'category', 
+      data: hotProducts.map((x) => x.name || '未知商品'),
+      axisLabel: { 
+        interval: 0, 
+        rotate: 30,
+        formatter: function(value) {
+          return value.length > 8 ? value.substring(0, 8) + '...' : value
+        }
+      }
+    },
+    yAxis: { type: 'value', name: '销量' },
+    series: [{ 
+      type: 'bar', 
+      data: hotProducts.map((x) => x.sales || 0),
+      itemStyle: {
+        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+          { offset: 0, color: '#ff6b6b' },
+          { offset: 1, color: '#ffa07a' }
+        ]),
+        borderRadius: [8, 8, 0, 0]
+      }
+    }]
   })
 })
 </script>

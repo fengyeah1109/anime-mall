@@ -51,10 +51,11 @@ import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import { getRecommendationsApi } from '@/api/recommend'
-import { addCartApi } from '@/api/cart'
+import { useCartStore } from '@/stores/cart'
 import { getImageUrl } from '@/utils/image'
 
 const router = useRouter()
+const cartStore = useCartStore()
 const loading = ref(true)
 const recommendations = ref([])
 
@@ -76,12 +77,8 @@ const loadRecommendations = async () => {
 
 const addToCart = async (productId) => {
   try {
-    const response = await addCartApi({ productId, quantity: 1 })
-    if (response.code === 0) {
-      ElMessage.success('已加入购物车')
-    } else {
-      ElMessage.error(response.msg || '加入购物车失败')
-    }
+    await cartStore.addItem(productId, 1)
+    ElMessage.success('已加入购物车')
   } catch (error) {
     ElMessage.error('加入购物车失败')
   }
@@ -185,6 +182,7 @@ onMounted(() => {
   text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-line-clamp: 2;
+  line-clamp: 2;
   -webkit-box-orient: vertical;
 }
 
